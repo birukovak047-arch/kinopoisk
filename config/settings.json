@@ -9,20 +9,20 @@
       "height": 900
     },
     "selectors": {
-      "advanced_title": "input[name=\"m_act[find]\"]",
-      "header_title": "input[name=\"kp_query\"]",
-      "year": "select[name=\"m_act[year]\"]",
-      "type": "select[name=\"m_act[what]\"]",
-      "results": ".search_results .element",
+      "advanced_title": "input[role=\"combobox\"]",
+      "header_title": ".styles_movieTitleRoot__65tAz",
+      "year": "select[name='m_act[year]']",
+      "type": "select[name='m_act[what]']",
+      "results": ".styles_root__kOQCn",
       "result_title": ".info .name a",
       "result_year": ".info .year",
-      "poster": "[data-tid=\"film-poster\"], img[class*=\"film-poster\"], img[alt*=\"Постер\"]",
-      "description": "[data-tid=\"movie-description\"], [class*=\"film-synopsis\"], [class*=\"styles_synopsis\"]"
+      "poster": "[data-tid='film-poster'], img[class*='film-poster'], img[alt*='Постер']",
+      "description": "[data-tid='movie-description'], [class*='film-synopsis'], [class*='styles_synopsis']"
     }
   },
   "api": {
     "base_url": "https://api.poiskkino.dev/v1.5",
     "timeout_seconds": 20,
-    "invalid_token": "invalid_test_token"
+    "invalid_token": "CDSYGNH-NRZM88A-NS3A6QF-BGKK2G7"
   }
 }
