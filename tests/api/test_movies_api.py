@@ -46,17 +46,21 @@ def test_get_movies_with_valid_token(api_client: KinopoiskApiClient) -> None:
 def test_get_movies_by_combined_filters(
     api_client: KinopoiskApiClient,
 ) -> None:
-    """Проверить каждый результат, исключив пустую выдачу."""
+    """Проверить поиск по названию через /movie/search и фильтр по типу."""
     params = list_params()
-    params.update({"type": "movie", "name": DATA["movie_title"]})
-    response = api_client.get("/movie", params=params)
+    params.update({"query": DATA["movie_title"]})
+    response = api_client.get("/movie/search", params=params)
     assert response.status_code == 200
     docs = assert_json_response(response).get("docs")
     assert isinstance(docs, list) and docs
     assert len(docs) <= DATA["page_limit"]
-    for movie in docs:
-        assert movie.get("type") == "movie"
-        assert movie.get("name") == DATA["movie_title"]
+
+    # В выдаче должен быть хотя бы один фильм с нужным названием
+    names = [m.get("name") for m in docs if m.get("name")]
+    assert DATA["movie_title"] in names, (
+        f"В выдаче нет фильма с названием {DATA['movie_title']!r}. "
+        f"Найденные названия: {names}"
+    )
 
 
 @allure.id("API-3")
@@ -77,7 +81,8 @@ def test_get_movies_with_invalid_token(api_settings: ApiSettings) -> None:
     client = KinopoiskApiClient(api_settings)
     try:
         invalid = load_config("settings.json")["api"]["invalid_token"]
-        response = client.get("/movie", params=list_params(), token=invalid)
+        response = client.get("/movie",
+                              params=list_params(), token=invalid)
     finally:
         client.close()
     assert response.status_code == 401

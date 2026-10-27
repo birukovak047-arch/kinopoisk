@@ -27,7 +27,9 @@ def test_search_movie_with_type_and_year_filters(page: Page) -> None:
     """FT-04 / TestIT 215: проверка до пяти результатов и их карточек."""
     search = SearchPage(page)
     search.open()
-    search.apply_movie_year_filter(DATA["filter_year"], DATA["filter_type"])
+    search.apply_movie_year_filter(
+        DATA["filter_year"], DATA["filter_type"], DATA["movie_title"]
+    )
     urls = search.filtered_movie_urls(
         DATA["filter_year"], DATA["filter_sample_size"]
     )
