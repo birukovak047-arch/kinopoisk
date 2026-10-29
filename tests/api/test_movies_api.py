@@ -1,5 +1,3 @@
-"""Три позитивных и два негативных API-теста из Google Docs."""
-
 from typing import Any
 
 import allure

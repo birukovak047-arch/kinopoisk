@@ -24,7 +24,8 @@ def pytest_runtest_makereport(
 
 def pytest_addoption(parser: Parser) -> None:
     """Добавить переключатель видимого браузера."""
-    parser.addoption("--headed", action="store_true", help="Показать Chromium")
+    parser.addoption("--headed",
+                     action="store_true", help="Показать Chromium")
 
 
 @pytest.fixture()

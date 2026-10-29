@@ -1,5 +1,3 @@
-"""Пять независимых позитивных UI-сценариев из XLS."""
-
 import allure
 import pytest
 from config.loader import load_config
@@ -56,7 +54,8 @@ def test_repeat_search_after_query_change(page: Page) -> None:
 @allure.id("217")
 @allure.title("Открытие карточки фильма из поиска")
 def test_open_movie_card_from_search_results(page: Page) -> None:
-    """FT-06 / TestIT 217: самостоятельно подготовить выдачу и открыть фильм."""
+    """FT-06 / TestIT 217: самостоятельно подготовить
+    выдачу и открыть фильм."""
     search = SearchPage(page)
     search.open()
     search.search(DATA["movie_title"])

@@ -1,8 +1,5 @@
-"""Page Object поиска: главная страница (новая выдача) и /s/ (старая выдача)."""
-
 import re
 from urllib.parse import quote, urljoin
-
 from allure import step
 from config.loader import load_config
 from playwright.sync_api import Locator, Page, expect
@@ -50,7 +47,8 @@ class SearchPage:
             has_text=pattern
         ).first
         expect(link).to_be_visible(timeout=20000)
-        expect(link).to_have_attribute("href", re.compile(r"/(film|series)/\d+"))
+        (expect(link).to_have_attribute
+         ("href", re.compile(r"/(film|series)/\d+")))
 
     @step("Открыть карточку фильма: {title} ({year})")
     def open_movie_result(self, title: str, year: int) -> None:
@@ -66,19 +64,22 @@ class SearchPage:
 
     @step("Открыть /s/ с фильтрами: {type_label}, {year}, {title}")
     def apply_movie_year_filter(
-        self, year: int, type_label: str, title: str
+            self, year: int, type_label: str, title: str
     ) -> None:
-        # На /s/ без названия выдача пустая, поэтому title обязателен.
-        type_value = {"фильм": "film", "сериал": "series"}.get(
-            type_label.lower(), type_label
+        self.page.goto(
+            f"{self.ui['base_url']}/s/",
+            wait_until="domcontentloaded"
         )
-        url = (
-            f"{self.ui['base_url']}/s/"
-            f"?m_act%5Byear%5D={year}"
-            f"&m_act%5Bwhat%5D={type_value}"
-            f"&m_act%5Bfind%5D={quote(title)}"
-        )
-        self.page.goto(url, wait_until="domcontentloaded")
+        form = self.page.locator('#formSearchMain')
+        (form.locator
+         ('input[name="m_act[find]"]').fill(title))
+        (form.locator
+         ('select[name="m_act[from_year]"]').select_option(str(year)))
+        (form.locator
+         ('select[name="m_act[to_year]"]').select_option(str(year)))
+        (form.locator
+         ('select[name="m_act[content_find]"]').select_option('film'))
+        form.locator('input[value="поиск"]').click()
         expect(
             self.page.locator(self.selectors["results_advanced"]).first
         ).to_be_visible(timeout=20000)
@@ -93,7 +94,8 @@ class SearchPage:
         urls: list[str] = []
         for index in range(count):
             row = rows.nth(index)
-            expect(row.locator(self.selectors["result_year_advanced"])).to_have_text(
+            expect(row.locator(self.selectors
+                               ["result_year_advanced"])).to_have_text(
                 re.compile(rf"\b{year}\b")
             )
             link = row.locator(self.selectors["result_title_advanced"])
