@@ -129,14 +129,3 @@ Allure CLI устанавливается отдельно от Python-зави�
 Без CLI pytest создаст файлы результатов, но HTML-отчет не откроется.
 В отчет попадают шаги, ответы API без заголовков и скриншот при UI-ошибке.
 Перед публикацией дополнительно проверьте вложения на персональные данные.
-
-Публикация (после создания пустого репозитория в GitHub):
-
-```bash
-git init
-git add .
-git commit -m "Add Kinopoisk UI and API autotests"
-git branch -M main
-git remote add origin https://github.com/YOUR_LOGIN/kinopoisk-automation.git
-git push -u origin main
-```
